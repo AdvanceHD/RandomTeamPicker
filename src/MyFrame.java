@@ -62,7 +62,7 @@ public class MyFrame extends JFrame {
 		ImageIcon image = new ImageIcon(MyFrame.class.getResource("/bed.png"));
 		
 		JLabel label = new JLabel();
-		JLabel version = new JLabel("v2.7.5");
+		JLabel version = new JLabel("v2.8.5");
 		
 		label.setText("Random Team Picker");
 		label.setBounds(130, 25, 200, 10); //scales label
