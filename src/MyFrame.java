@@ -104,7 +104,7 @@ public class MyFrame extends JFrame {
 					case "White": button1.setBackground(Color.white);
 						button1.setForeground(Color.black);
 						break;
-					case "Pink": button1.setBackground(Color.pink);
+					case "Pink": button1.setBackground(Color.magenta);
 						button1.setForeground(Color.black);
 						break;
 					}
