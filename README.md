@@ -4,7 +4,7 @@ A simple program that picks a random Bedwars team color for you. Useful for serv
 Made as a learning project.
 
 # Requirements
-Requires Java 8 or above.
+Requires Java 8 or higher.
 
 # License
 This project is licensed under the GNU General Public License v3.0
