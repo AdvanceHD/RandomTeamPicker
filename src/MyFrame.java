@@ -61,12 +61,16 @@ public class MyFrame extends JFrame {
 	MyFrame() {
 		ImageIcon image = new ImageIcon(MyFrame.class.getResource("/bed.png"));
 		
-		JLabel label = new JLabel();
+		JLabel label = new JLabel("Random Team Picker");
 		JLabel version = new JLabel("v2.8.5");
+		JPanel background = new JPanel(); //part of dark version only
 		
-		label.setText("Random Team Picker");
 		label.setBounds(130, 25, 200, 10); //scales label
+		label.setForeground(Color.white); //part of dark version only
 		version.setBounds(1, 150, 100, 10);
+		version.setForeground(Color.white); //part of dark version only
+		background.setBounds(0, 0, 400, 200);
+		background.setBackground(Color.darkGray); //part of dark version only
 		
 		button1 = new JButton("Doubles");
 		button1.setFocusable(false);
@@ -151,7 +155,6 @@ public class MyFrame extends JFrame {
 		this.setTitle("Random Team Picker "+version.getText());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		
 		this.setSize(400, 200); //sets resolution
 		this.setLayout(null);
 		this.setLocationRelativeTo(null);
@@ -160,6 +163,7 @@ public class MyFrame extends JFrame {
 		this.add(label);
 		this.add(button1);
 		this.add(button2);
+		this.add(background); //part of dark version only
 		this.setVisible(true); //displays frame
 	}
 	
