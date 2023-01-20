@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Random;
 import javax.swing.*;
 
@@ -62,20 +63,19 @@ public class MyFrame extends JFrame {
 		ImageIcon image = new ImageIcon(MyFrame.class.getResource("/bed.png"));
 		
 		JLabel label = new JLabel("Random Team Picker");
-		JLabel version = new JLabel("v2.8.5");
-		JPanel background = new JPanel(); //part of dark version only
+		JLabel version = new JLabel("v2.9.5");
+		//JCheckBox checkBox = new JCheckBox("Dark Mode"); //part of dark version only
 		
 		label.setBounds(130, 25, 200, 10); //scales label
-		label.setForeground(Color.white); //part of dark version only
 		version.setBounds(1, 150, 100, 10);
-		version.setForeground(Color.white); //part of dark version only
-		background.setBounds(0, 0, 400, 200);
-		background.setBackground(Color.darkGray); //part of dark version only
+		
+		//checkBox.setFocusable(false); //part of dark version only
+		//checkBox.setBounds(191, 145, 100, 15); //part of dark version only
 		
 		button1 = new JButton("Doubles");
 		button1.setFocusable(false);
 		button1.setBounds(40, 50, 150, 75);
-		button1.addActionListener(new ActionListener() {
+		/*button1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				
@@ -117,12 +117,51 @@ public class MyFrame extends JFrame {
 					previousTeam2s = team;
 				}
 			}
-		});
+		});*/ 							//OLD CODE
+		
+		button1.addActionListener(
+				(e) -> {
+					String team = teamDoubles();
+						
+					while(team == previousTeam2s) {
+						team = teamDoubles();
+					}
+						
+					switch(team) {
+					case "Blue": button1.setBackground(Color.blue);
+						button1.setForeground(Color.white);
+						break;
+					case "Red": button1.setBackground(Color.red);
+						button1.setForeground(Color.black);
+						break;
+					case "Lime": button1.setBackground(Color.green);
+						button1.setForeground(Color.black);
+						break;
+					case "Yellow": button1.setBackground(Color.yellow);
+						button1.setForeground(Color.black);
+						break;
+					case "Cyan": button1.setBackground(Color.cyan);
+						button1.setForeground(Color.black);
+						break;
+					case "Gray": button1.setBackground(Color.gray);
+						button1.setForeground(Color.white);
+						break;
+					case "White": button1.setBackground(Color.white);
+						button1.setForeground(Color.black);
+						break;
+					case "Pink": button1.setBackground(Color.magenta);
+						button1.setForeground(Color.black);
+						break;
+					}
+					
+					button1.setText("Your team is "+team+".");
+					previousTeam2s = team;
+				});
 		
 		button2 = new JButton("3s & 4s");
 		button2.setFocusable(false);
 		button2.setBounds(195, 50, 150, 75);
-		button2.addActionListener(new ActionListener() {
+		/*button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					if (e.getSource() == button2) {
 						String team = team4s();
@@ -150,7 +189,61 @@ public class MyFrame extends JFrame {
 						previousTeam4s = team;
 					}
 				}
-			});
+			});*/						//OLD CODE
+		
+		button2.addActionListener(
+				(e) -> {
+					String team = team4s();
+					
+					while(team == previousTeam4s) {
+						team = team4s();
+					}
+					
+					switch(team) {
+					case "Blue": button2.setBackground(Color.blue);
+						button2.setForeground(Color.white);
+						break;
+					case "Red": button2.setBackground(Color.red);
+						button2.setForeground(Color.black);
+						break;
+					case "Lime": button2.setBackground(Color.green);
+						button2.setForeground(Color.black);
+						break;
+					case "Yellow": button2.setBackground(Color.yellow);
+						button2.setForeground(Color.black);
+						break;
+					}
+					
+					button2.setText("Your team is "+team+".");
+					previousTeam4s = team;
+				});
+		
+		/*int darkMode;
+		
+		ModeFileWriter fileWriter = new ModeFileWriter();
+		ModeFileReader fileReader = new ModeFileReader();
+		File modeFile = new File("mode.txt");
+		
+		if(modeFile.exists()) {
+			darkMode = fileReader.reader();
+		}
+		else {
+			fileWriter.writer(48);
+			darkMode = 48;
+		}
+		
+		if(darkMode == 49) {
+			checkBox.setSelected(true);
+		}
+		
+		if(checkBox.isSelected()) {
+			fileWriter.writer(49);
+			darkMode = 49;
+		}
+		else {
+			fileWriter.writer(48);
+			darkMode = 48;
+		}*/
 		
 		this.setTitle("Random Team Picker "+version.getText());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -163,7 +256,22 @@ public class MyFrame extends JFrame {
 		this.add(label);
 		this.add(button1);
 		this.add(button2);
-		this.add(background); //part of dark version only
+		//this.add(checkBox); //part of dark version only
+		
+		/*switch(darkMode) {
+		case 48: this.setVisible(true);
+		break;
+		case 49:
+			label.setForeground(Color.white); //part of dark version only
+			version.setForeground(Color.white); //part of dark version only
+			JPanel background = new JPanel(); //part of dark version only
+			background.setBounds(0, 0, 400, 200); //part of dark version only
+			background.setBackground(Color.darkGray); //part of dark version only
+			this.add(background); //part of dark version only
+			this.setVisible(true);
+		break;
+		}*/
+		
 		this.setVisible(true); //displays frame
 	}
 	
