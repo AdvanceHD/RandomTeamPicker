@@ -1,14 +1,24 @@
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Random;
 import javax.swing.*;
 
 public class MyFrame extends JFrame {
 
-	JButton button1;
-	JButton button2;
+	JButton button1 = new JButton("Doubles");
+	JButton button2 = new JButton("3s & 4s");
 	
 	Random random = new Random();
 
@@ -56,23 +66,169 @@ public class MyFrame extends JFrame {
 		return team;
 	}
 	
+	JCheckBox checkBox = new JCheckBox("Dark Mode");
+	JLabel label = new JLabel("Random Team Picker");
+	JLabel version = new JLabel("v2.11.5");
+	JPanel background = new JPanel();
+	
 	String previousTeam2s = null;
 	String previousTeam4s = null;
+	
+	File mf = new File("mode.dat");
+	
+	int dMode = 0;
+	
+	{
+	if(!mf.exists()) {
+		try {
+			FileOutputStream fos = new FileOutputStream("mode.dat");
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			
+			DataStorage dStorage = new DataStorage();
+			
+			dStorage.darkMode = dMode;
+			
+			oos.writeObject(dStorage);
+			oos.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+}
+	
+	int darkMode = load();
+	
+	public int load() {
+		
+		try {
+			FileInputStream fis = new FileInputStream("mode.dat");
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			
+			DataStorage dStorage = (DataStorage)ois.readObject();
+			
+			ois.close();
+			
+			darkMode = dStorage.darkMode;
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return darkMode;
+	}
+	
+	{
+	switch(darkMode) {
+	case 1:
+		label.setForeground(Color.white);
+		version.setForeground(Color.white);
+		background.setBackground(Color.darkGray);
+		button1.setBackground(Color.darkGray);
+		button1.setForeground(Color.white);
+		button2.setBackground(Color.darkGray);
+		button2.setForeground(Color.white);
+		checkBox.setBackground(Color.darkGray);
+		checkBox.setForeground(Color.white);
+		checkBox.setSelected(true);
+	break;
+	}
+}
+	
+	public void toggleVisible(boolean enabled) {
+		if(enabled) {
+			this.setVisible(true);
+		}
+		else {
+			this.setVisible(false);
+		}
+	}
 	
 	MyFrame() {
 		ImageIcon image = new ImageIcon(MyFrame.class.getResource("/bed.png"));
 		
-		JLabel label = new JLabel("Random Team Picker");
-		JLabel version = new JLabel("v2.9.5");
-		//JCheckBox checkBox = new JCheckBox("Dark Mode"); //part of dark version only
-		
 		label.setBounds(130, 25, 200, 10); //scales label
 		version.setBounds(1, 150, 100, 10);
 		
-		//checkBox.setFocusable(false); //part of dark version only
-		//checkBox.setBounds(191, 145, 100, 15); //part of dark version only
+		checkBox.setFocusable(false);
+		checkBox.setBounds(191, 145, 100, 15);
 		
-		button1 = new JButton("Doubles");
+		background.setBounds(0, 0, 400, 200);
+		
+		checkBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					darkMode = 1;
+					
+					toggleVisible(false);
+					label.setForeground(Color.white);
+					version.setForeground(Color.white);
+					background.setBackground(Color.darkGray);
+					button1.setBackground(Color.darkGray);
+					button1.setForeground(Color.white);
+					button2.setBackground(Color.darkGray);
+					button2.setForeground(Color.white);
+					checkBox.setBackground(Color.darkGray);
+					checkBox.setForeground(Color.white);
+					toggleVisible(true);
+					
+					try {
+						FileOutputStream fos = new FileOutputStream("mode.dat");
+						BufferedOutputStream bos = new BufferedOutputStream(fos);
+						ObjectOutputStream oos = new ObjectOutputStream(bos);
+						
+						DataStorage dStorage = new DataStorage();
+						
+						dStorage.darkMode = darkMode;
+						
+						oos.writeObject(dStorage);
+						oos.close();
+						
+					} catch(IOException f) {
+						f.printStackTrace();
+					}
+					
+				}
+				else {
+					darkMode = 0;
+					
+					toggleVisible(false);
+					label.setForeground(null);
+					version.setForeground(null);
+					background.setBackground(null);
+					button1.setBackground(null);
+					button1.setForeground(null);
+					button2.setBackground(null);
+					button2.setForeground(null);
+					checkBox.setBackground(null);
+					checkBox.setForeground(null);
+					toggleVisible(true);
+					
+					try {
+						FileOutputStream fos = new FileOutputStream("mode.dat");
+						BufferedOutputStream bos = new BufferedOutputStream(fos);
+						ObjectOutputStream oos = new ObjectOutputStream(bos);
+						
+						DataStorage dStorage = new DataStorage();
+						
+						dStorage.darkMode = darkMode;
+						
+						oos.writeObject(dStorage);
+						oos.close();
+						
+					} catch(IOException f) {
+						f.printStackTrace();
+					}
+					
+				}
+			}
+		});
+		
 		button1.setFocusable(false);
 		button1.setBounds(40, 50, 150, 75);
 		/*button1.addActionListener(new ActionListener() {
@@ -158,7 +314,6 @@ public class MyFrame extends JFrame {
 					previousTeam2s = team;
 				});
 		
-		button2 = new JButton("3s & 4s");
 		button2.setFocusable(false);
 		button2.setBounds(195, 50, 150, 75);
 		/*button2.addActionListener(new ActionListener() {
@@ -218,33 +373,6 @@ public class MyFrame extends JFrame {
 					previousTeam4s = team;
 				});
 		
-		/*int darkMode;
-		
-		ModeFileWriter fileWriter = new ModeFileWriter();
-		ModeFileReader fileReader = new ModeFileReader();
-		File modeFile = new File("mode.txt");
-		
-		if(modeFile.exists()) {
-			darkMode = fileReader.reader();
-		}
-		else {
-			fileWriter.writer(48);
-			darkMode = 48;
-		}
-		
-		if(darkMode == 49) {
-			checkBox.setSelected(true);
-		}
-		
-		if(checkBox.isSelected()) {
-			fileWriter.writer(49);
-			darkMode = 49;
-		}
-		else {
-			fileWriter.writer(48);
-			darkMode = 48;
-		}*/
-		
 		this.setTitle("Random Team Picker "+version.getText());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -256,23 +384,8 @@ public class MyFrame extends JFrame {
 		this.add(label);
 		this.add(button1);
 		this.add(button2);
-		//this.add(checkBox); //part of dark version only
-		
-		/*switch(darkMode) {
-		case 48: this.setVisible(true);
-		break;
-		case 49:
-			label.setForeground(Color.white); //part of dark version only
-			version.setForeground(Color.white); //part of dark version only
-			JPanel background = new JPanel(); //part of dark version only
-			background.setBounds(0, 0, 400, 200); //part of dark version only
-			background.setBackground(Color.darkGray); //part of dark version only
-			this.add(background); //part of dark version only
-			this.setVisible(true);
-		break;
-		}*/
-		
+		this.add(checkBox);
+		this.add(background);
 		this.setVisible(true); //displays frame
 	}
-	
 }
