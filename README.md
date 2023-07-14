@@ -6,20 +6,16 @@ Made as a learning project.
 # Requirements
 Requires Java 8 or newer.
 
-# License
-This project is licensed under the GNU General Public License v3.0
+# Licensing
+This project is licensed under the MIT License.
 
 Permissions:
 
 - Commercial use
 - Modification
 - Distribution
-- Patent use
 - Private use
 
 Conditions:
 
 - License and copyright notice
-- State changes
-- Disclose source
-- Same license
